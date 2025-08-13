@@ -1,0 +1,379 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/juandr77/PROGCOM-B/blob/main/juan%20david%20rodriguez%20gualdron-trbajo%20en%20clase%20\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#if-else\n",
+        "n=int(input(\"Ingrese un numero: \"))\n",
+        "if n % 2 == 0:\n",
+        "  print(\"Numero par\")\n",
+        "else:\n",
+        "  print(\"Numero impar\")\n",
+        ""
+      ],
+      "metadata": {
+        "id": "IiJduFxkbZ-5"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#if-elif-else\n",
+        "n = int(input(\"Ingrese un número: \"))\n",
+        "if n == 0:\n",
+        "    print(\"No tiene valor\")\n",
+        "elif n % 2 == 0:\n",
+        "    print(\"Número par\")\n",
+        "else:\n",
+        "    print(\"Número impar\")"
+      ],
+      "metadata": {
+        "id": "Pg1CN8tnbaHt"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Operador terniario\n",
+        "n=int(input(\"Ingrese un numero: \"))\n",
+        "print(\"Numero par\") if n % 2 == 0 else print(\"Numero impar\")\n",
+        ""
+      ],
+      "metadata": {
+        "id": "tWVqvG8_baKa"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#if-else\n",
+        "n=int(input(\"Ingresar número A: \"))\n",
+        "l=int(input(\"Ingresar número B: \"))\n",
+        "h=int(input(\"Ingresar número C: \"))\n",
+        "m=n\n",
+        "if l>m:\n",
+        "    m=l\n",
+        "if h>m:\n",
+        "    m=h\n",
+        "if m==n:\n",
+        "    print(f\"El número {m} es mayor\")\n",
+        "else:\n",
+        "    if m==l:\n",
+        "        print(f\"El número {m} es mayor\")\n",
+        "    else:\n",
+        "        print(f\"El número {m} es mayor\")\n",
+        ""
+      ],
+      "metadata": {
+        "id": "3X4cMnI0baM4"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#if-elif-else\n",
+        "n=int(input(\"Ingrese número A: \"))\n",
+        "l=int(input(\"Ingrese número B: \"))\n",
+        "h=int(input(\"Ingrese número C: \"))\n",
+        "if n>=l and n>=h:\n",
+        "    m=n\n",
+        "elif l>=h:\n",
+        "    m=l\n",
+        "else:\n",
+        "    m=h\n",
+        "print(f\"El número mayor es {m}\")"
+      ],
+      "metadata": {
+        "id": "nxUVpXepbaT0"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Operador terniario\n",
+        "n=int(input(\"Ingresar número A: \"))\n",
+        "l=int(input(\"Ingresar número B: \"))\n",
+        "h=int(input(\"Ingresar número C: \"))\n",
+        "m=n if (n>=l and n>=h) else (l if l>=h else h)\n",
+        "print(f\"El número {m} es mayor\")"
+      ],
+      "metadata": {
+        "id": "eDMo_IFobaWk"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#if-else\n",
+        "año=int(input(\"Introduzca un año: \"))\n",
+        "if año%4==0 and año%100!=0:\n",
+        "  print(f\"{año} es un año bisiesto\")\n",
+        "else:\n",
+        "  if año%400==0:\n",
+        "    print(f\"{año} es un año bisiesto\")\n",
+        "  else:\n",
+        "    print(f\"{año} no un año bisiesto\")\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "Y4M8OBAlbaZH"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#if-elif-else\n",
+        "año=int(input(\"Introduzca un año: \"))\n",
+        "if año%4==0 and año%100!=0: print(f\"{año} es un año bisiesto\")\n",
+        "elif año%400==0: print(f\"{año} es un año bisiesto\")\n",
+        "else:print(f\"{año} no un año bisiesto\")\n",
+        ""
+      ],
+      "metadata": {
+        "id": "z7_mkweObabl"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Operador terniario\n",
+        "año = int(input(\"Ingrese un año: \"))\n",
+        "r = (\n",
+        "    f\"{año} es un año bisiesto\"\n",
+        "    if año % 400 == 0\n",
+        "    else (f\"{año} no es un año bisiesto\" if año%100==0 else (f\"{año} es un año bisiesto\" if año%4==0 else f\"{año} no es un año bisiesto\"))\n",
+        ")\n",
+        "print(r)"
+      ],
+      "metadata": {
+        "id": "C1eUMlM6baeY"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#if-else\n",
+        "p = input(\"Contraseña: \")\n",
+        "\n",
+        "if len(p) < 8:\n",
+        "    print(\"Contraseña muy corta\")\n",
+        "else:\n",
+        "    if not any(c.isdigit() for c in p):\n",
+        "        print(\"Falta que tenga uno o más números\")\n",
+        "    else:\n",
+        "        if not any(c.isupper() for c in p):\n",
+        "            print(\"Faltan mayúsculas\")\n",
+        "        else:\n",
+        "            print(\"Contraseña valida\")"
+      ],
+      "metadata": {
+        "id": "DyM6y0JTbajU"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#if-elif-else\n",
+        "p = input(\"Contraseña: \")\n",
+        "\n",
+        "if len(p) < 8:\n",
+        "    print(\"Contraseña muy corta\")\n",
+        "elif not any(c.isdigit() for c in p):\n",
+        "    print(\"Falta que tenga uno o más números\")\n",
+        "elif not any(c.isupper() for c in p):\n",
+        "    print(\"Faltan mayúsculas\")\n",
+        "else:\n",
+        "    print(\"Contraseña valida\")\n",
+        ""
+      ],
+      "metadata": {
+        "id": "Kb9GRQc4bal2"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Operación terniario\n",
+        "p = input(\"Contraseña: \")\n",
+        "print(\"Contraseña valida\" if len(p) >= 8 and any(c.isdigit() for c in p) and any(c.isupper() for c in p) else \"Contraseña muy corta\" if len(p) < 8 else \"Falta que tenga uno o más números\" if not any(c.isdigit() for c in p) else \"Faltan mayúsculas\")\n",
+        ""
+      ],
+      "metadata": {
+        "id": "T6KyqJAob7g9"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#if-else\n",
+        "n=int(input(\"Ingrese un número: \"))\n",
+        "\n",
+        "if n%3== 0 and n%5==0:\n",
+        "    print(\"FizzBuzz\")\n",
+        "else:\n",
+        "    if n%3==0:\n",
+        "        print(\"Fizz\")\n",
+        "    else:\n",
+        "        if n%5==0:\n",
+        "            print(\"Buzz\")\n",
+        "        else:\n",
+        "            print(n)\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "8u1f6LU4b7jb"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "#if-elif-else\n",
+        "n=int(input(\"Ingrese un número: \"))\n",
+        "\n",
+        "if n%3==0 and n%5==0:\n",
+        "    print(\"FizzBuzz\")\n",
+        "elif n%3==0:\n",
+        "    print(\"Fizz\")\n",
+        "elif n%5==0:\n",
+        "    print(\"Buzz\")\n",
+        "else:\n",
+        "    print(n)"
+      ],
+      "metadata": {
+        "id": "b-vqtlE8b7l1"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Operación ternaria\n",
+        "print(\"FizzBuzz\" if (n := int(input(\"Número: \"))) % 15 == 0 else \"Fizz\" if n % 3 == 0 else \"Buzz\" if n % 5 == 0 else n)"
+      ],
+      "metadata": {
+        "id": "esif_v6sb7oR"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#if-else\n",
+        "s=5000000 #saldo del cajero\n",
+        "m=int(input(\"Ingrese el dinero para retirar: $\"))\n",
+        "\n",
+        "if m<=0:\n",
+        "    print(\"Error: El monto debe ser mayor que $0\")\n",
+        "else:\n",
+        "    if m>s:\n",
+        "        print(\"Error: Fondos insuficientes\")\n",
+        "    else:\n",
+        "        s=s-m\n",
+        "        print(f\"Retiro exitoso, Saldo en la cuenta: ${s}\")\n",
+        ""
+      ],
+      "metadata": {
+        "id": "guBSi20Gb7sv"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#if-elif-else\n",
+        "s=5000000 #saldo del cajero\n",
+        "m=int(input(\"Ingrese el dinero para retirar: $\"))\n",
+        "\n",
+        "if m<=0:\n",
+        "    print(\"Error: El monto debe ser mayor que $0\")\n",
+        "elif m>s:\n",
+        "    print(\"Error: Fondos insuficientes\")\n",
+        "else:\n",
+        "    s-=m\n",
+        "    print(f\"Retiro exitoso, Saldo en la cuenta: ${s}\")\n",
+        ""
+      ],
+      "metadata": {
+        "id": "gQTbgTRFcPTw"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Operación ternaria\n",
+        "s = 5000000; m = int(input(\"Ingrese el dinero para retirar: $\")); print(\"Error: El monto debe ser mayor que $0\" if m <= 0 else \"Error: Fondos insuficientes\" if m > s else f\"Retiro exitoso, Saldo en la cuenta: ${s - m}\")\n",
+        ""
+      ],
+      "metadata": {
+        "id": "6oNqIk29cP-U"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "i3zbzIigb7vJ"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "name": "Te damos la bienvenida a Colab",
+      "toc_visible": true,
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
