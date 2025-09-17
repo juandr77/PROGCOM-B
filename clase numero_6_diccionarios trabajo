@@ -1,0 +1,356 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyN92mD7inKVIYRRx408k7U2",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/juandr77/PROGCOM-B/blob/main/clase%20numero_6_diccionarios%20trabajo\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "listas"
+      ],
+      "metadata": {
+        "id": "i3JfhzNb8jBp"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Crea una función que reciba una lista y retorne otra lista sin elementos repetidos"
+      ],
+      "metadata": {
+        "id": "H44Wyk8XDX2u"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def eliminar_repetidos(lista):\n",
+        "    return [item for index, item in enumerate(lista) if item not in lista[:index]]\n",
+        "lista_con_repetidos = [1, 2, 2, 3, 4, 4, 5]\n",
+        "resultado = eliminar_repetidos(lista_con_repetidos)\n",
+        "print(resultado)"
+      ],
+      "metadata": {
+        "id": "WpblF2ro5-0y"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "14 Crea una función que reciba un diccionario de productos (clave: nombre, valor: precio) y retorne el\n",
+        "total."
+      ],
+      "metadata": {
+        "id": "_LJIDYV65RUS"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def total_productos(productos: dict):\n",
+        "    return sum([precio for precio in productos.values()])\n",
+        "    productos = {\"Manzana\": 2.7, \"Pan\": 1, \"Leche\": 3}\n",
+        "print(total_productos(productos))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "1aQMEpJ_5RwS",
+        "outputId": "979d1276-a2a8-40b5-81fd-0e0c9d8c87e1"
+      },
+      "execution_count": 26,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "6.7\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "17 Crea una función que reciba un diccionario y retorne el nombre del estudiante con mayor nota."
+      ],
+      "metadata": {
+        "id": "4KTfh8iI8zmp"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def sin_repetidos(lista: list) -> list:\n",
+        "    return list(dict.fromkeys(lista))\n",
+        "datos = [1, 2, 2, 3, 4, 4, 5, 1]\n",
+        "print(sin_repetidos(datos))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7MZkQCHk6wBq",
+        "outputId": "a6cc7773-57be-455a-9fcd-17ba8a9052a3"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "El estudiante con la mayor nota es: Ana\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Crea una función que reciba un diccionario anidado con datos de estudiantes (nombre  {&#39;nota&#39;: x,\n",
+        "&#39;edad&#39;: y}) y retorne el promedio de notas de los mayores de edad."
+      ],
+      "metadata": {
+        "id": "ieVGIwRS57lj"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def promedio_mayores(estudiantes: dict):\n",
+        "    notas = [datos['nota'] for datos in estudiantes.values() if datos['edad'] >= 18]\n",
+        "    return sum(notas) / len(notas) if notas else 0\n",
+        "estudiantes = {\"Ana\": {\"nota\": 4., \"edad\": 17},\"Luis\": {\"nota\": 3.8, \"edad\": 18},\"María\": {\"nota\": 4, \"edad\": 20},\"Pedro\": {\"nota\": 2, \"edad\": 16}}\n",
+        "print(promedio_mayores(estudiantes))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "jLDgIcw-Aw73",
+        "outputId": "3e2b6be4-afdd-4c5a-dd65-370dba9d3821"
+      },
+      "execution_count": 30,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "3.9\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "diccionarios\n"
+      ],
+      "metadata": {
+        "id": "fLYofDfO8hzh"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "11 Crea una función que reciba una lista y retorne otra lista sin elementos repetidos"
+      ],
+      "metadata": {
+        "id": "HSi1gYvs8n3p"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def sin_repetidos(lista: list) -> list:\n",
+        "    return list(dict.fromkeys(lista))\n",
+        "datos = [1, 2, 2, 3, 4, 4, 5, 1]\n",
+        "print(sin_repetidos(datos))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "aXkAaGa482SQ",
+        "outputId": "5a6367c0-edf2-4787-8f9c-f78553a05c61"
+      },
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[1, 2, 3, 4, 5]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "14 Crea una función que reciba un diccionario de productos (clave: nombre, valor: precio) y retorne el\n",
+        "total."
+      ],
+      "metadata": {
+        "id": "jq-oxHY_8qEC"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "def calcular_total(diccionario_productos):\n",
+        "    return sum(diccionario_productos.values())\n",
+        "productos = {\"manzana\": 1.5,\"banana\": 2.0,\"naranja\": 1.2,\"pera\": 2.3}\n",
+        "total = calcular_total(productos)\n",
+        "print(f\"El total es: {total}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "jB01NRTO82lQ",
+        "outputId": "bc9321a8-dc2f-44bb-d408-e22467449951"
+      },
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "El total es: 7.0\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "17 Crea una función que reciba un diccionario y retorne el nombre del estudiante con mayor nota."
+      ],
+      "metadata": {
+        "id": "EOHZaJdd8qVR"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def estudiante_con_mayor_nota(diccionario_estudiantes):\n",
+        "    mejor_estudiante = [nombre for nombre, nota in diccionario_estudiantes.items() if nota == max(diccionario_estudiantes.values())]\n",
+        "    return mejor_estudiante[0]\n",
+        "estudiantes = {\"Juan\": 8.5,\"Ana\": 9.7,\"Luis\": 9.7,\"Carlos\": 8.0}\n",
+        "mejor_estudiante = estudiante_con_mayor_nota(estudiantes)\n",
+        "print(f\"El estudiante con la mayor nota es: {mejor_estudiante}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "POOQ2LQs827R",
+        "outputId": "5dfc4681-56d5-42f8-a87f-ec0b98b709fd"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "El estudiante con la mayor nota es: Ana\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Crea una función que reciba un diccionario anidado con datos de estudiantes (nombre  {&#39;nota&#39;: x,\n",
+        "# &#39;edad&#39;: y}) y retorne el promedio de notas de los mayores de edad."
+      ],
+      "metadata": {
+        "id": "K08tFUWlAxiu"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def promedio_mayores(estudiantes: dict) -> float:\n",
+        "    mayores = {nombre: datos for nombre, datos in estudiantes.items() if datos['edad'] >= 18}\n",
+        "    notas = [datos['nota'] for datos in mayores.values()]\n",
+        "    return sum(notas) / len(notas) if notas else 0\n",
+        "estudiantes = {\"Ana\": {\"nota\": 4.5, \"edad\": 17},\"Luis\": {\"nota\": 3.8, \"edad\": 18},\"María\": {\"nota\": 4.2, \"edad\": 20},\"Pedro\": {\"nota\": 2.9, \"edad\": 16}}\n",
+        "print(promedio_mayores(estudiantes))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "h-1NyLVnAx1e",
+        "outputId": "06f0fa22-b7c1-412a-dc95-a112791168dc"
+      },
+      "execution_count": 15,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "4.0\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def promedio_mayores(estudiantes: dict) -> float:\n",
+        "    mayores = {nombre: datos for nombre, datos in estudiantes.items() if datos['edad'] >= 18}\n",
+        "    notas = [datos['nota'] for datos in mayores.values()]\n",
+        "    return sum(notas) / len(notas) if notas else 0\n",
+        "estudiantes = {\"Ana\": {\"nota\": 4.5, \"edad\": 17},\"Luis\": {\"nota\": 3.8, \"edad\": 18},\"María\": {\"nota\": 4.2, \"edad\": 20},\"Pedro\": {\"nota\": 2.9, \"edad\": 16}}\n",
+        "print(promedio_mayores(estudiantes))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "06f0fa22-b7c1-412a-dc95-a112791168dc",
+        "id": "-DVlZi8_EfY-"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "4.0\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
