@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscaminas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(135deg, #1e1e2f, #2a2a3d);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+        /* Fondo animado para el menú de inicio */
+        #pantalla-inicio::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            animation: fondoAnimado 10s infinite alternate;
+            z-index: -1;
+        }
+        @keyframes fondoAnimado {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.2); opacity: 0.8; }
+        }
+        h1 {
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            font-size: 48px;
+            animation: aparecer 1s ease-in-out;
+        }
+        @keyframes aparecer {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        #pantalla-inicio, #juego {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 700px;
+        }
+        #pantalla-inicio {
+            display: flex;
+            background-color: rgba(42, 42, 61, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            animation: aparecer 1s ease-in-out;
+            text-align: center;
+        }
+        #juego {
+            display: none;
+        }
+        #instrucciones {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #cccccc;
+        }
+        .boton-nivel {
+            margin: 15px;
+            padding: 15px 30px;
+            font-size: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+        .boton-nivel:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+        }
+        .boton-nivel.facil { background-color: #4CAF50; }
+        .boton-nivel.medio { background-color: #ff9800; }
+        .boton-nivel.dificil { background-color: #f44336; }
+        .boton-nivel.facil:hover { background-color: #45a049; }
+        .boton-nivel.medio:hover { background-color: #e68900; }
+        .boton-nivel.dificil:hover { background-color: #d93b30; }
+        #info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 15px;
+            font-size: 18px;
+            background-color: #2a2a3d;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        #tablero {
+            display: grid;
+            gap: 2px;
+            background-color: #3b3b4f;
+            padding: 5px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border: 3px solid #ffd700;
+        }
+        .celda {
+            width: 35px;
+            height: 35px;
+            background-color: #5a5a7f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            border-radius: 5px;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+        @media (max-width: 600px) {
+            .celda {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+        }
+        .celda:hover:not(.revelada):not(.bandera) {
+            background-color: #6a6a9f;
+            transform: scale(1.05);
+        }
+        .celda.revelada {
+            background-color: #d4d4d4;
+            cursor: default;
+            transform: scale(0.95);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .celda.mina {
+            background-color: #ff4d4d;
+            animation: explosion 0.5s ease-in-out;
+        }
+        .celda.bandera::before {
+            content: "🚩";
+            font-size: 18px;
+        }
+        @keyframes explosion {
+            0% { transform: scale(1); background-color: #ff4d4d; }
+            50% { transform: scale(1.2); background-color: #ff6666; }
+            100% { transform: scale(1); background-color: #ff4d4d; }
+        }
+        @keyframes revelado {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(0.95); }
+        }
+        .celda.revelada:not(.mina) {
+            animation: revelado 0.3s ease-in-out;
+        }
+        #mensaje {
+            margin: 20px 0;
+            font-size: 22px;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            animation: mensajeAnimado 0.5s ease-in-out;
+        }
+        @keyframes mensajeAnimado {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        #botones-juego {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        #reiniciar, #volver-menu {
+            padding: 12px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #reiniciar {
+            background-color: #ffd700;
+            color: #1e1e2f;
+        }
+        #reiniciar:hover {
+            background-color: #e6c200;
+            transform: scale(1.05);
+        }
+        #volver-menu {
+            background-color: #2196F3;
+            color: white;
+        }
+        #volver-menu:hover {
+            background-color: #1e88e5;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Pantalla de inicio -->
+    <div id="pantalla-inicio">
+        <h1>Buscaminas</h1>
+        <div id="instrucciones">
+            Selecciona un nivel de dificultad para empezar a jugar.<br>
+            ¡Revela todas las celdas sin minas para ganar!
+        </div>
+        <button class="boton-nivel facil" onclick="seleccionarNivel('facil')">
+            <span>😊</span> Fácil (8x8, 10 minas)
+        </button>
+        <button class="boton-nivel medio" onclick="seleccionarNivel('medio')">
+            <span>😐</span> Medio (10x10, 15 minas)
+        </button>
+        <button class="boton-nivel dificil" onclick="seleccionarNivel('dificil')">
+            <span>😓</span> Difícil (12x12, 30 minas)
+        </button>
+    </div>
+
+    <!-- Pantalla del juego -->
+    <div id="juego">
+        <h1>Buscaminas</h1>
+        <div id="info">
+            <span>Nivel: <span id="nivel-actual">Medio</span></span>
+            <span>Minas restantes: <span id="minas-restantes">15</span></span>
+            <span>Tiempo: <span id="tiempo">0</span>s</span>
+        </div>
+        <div id="instrucciones-juego">
+            Haz clic izquierdo para revelar, clic derecho para colocar banderas.
+        </div>
+        <div id="tablero"></div>
+        <div id="mensaje"></div>
+        <div id="botones-juego">
+            <button id="reiniciar" onclick="iniciarJuego()">
+                <span>🔄</span> Reiniciar Juego
+            </button>
+            <button id="volver-menu" onclick="volverAlMenu()">
+                <span>🏠</span> Volver al Menú
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Configuración de niveles de dificultad
+        const niveles = {
+            facil: { tamañoTablero: 8, cantidadMinas: 10 },
+            medio: { tamañoTablero: 10, cantidadMinas: 15 },
+            dificil: { tamañoTablero: 12, cantidadMinas: 30 }
+        };
+
+        let nivelActual = 'medio'; // Nivel por defecto
+        let tamañoTablero = niveles[nivelActual].tamañoTablero;
+        let cantidadMinas = niveles[nivelActual].cantidadMinas;
+        let tablero = [];
+        let revelado = [];
+        let banderas = [];
+        let minas = new Set();
+        let juegoTerminado = false;
+        let minasRestantes = cantidadMinas;
+        let tiempo = 0;
+        let temporizador;
+
+        const pantallaInicio = document.getElementById('pantalla-inicio');
+        const juego = document.getElementById('juego');
+        const tableroElemento = document.getElementById('tablero');
+        const mensajeElemento = document.getElementById('mensaje');
+        const minasRestantesElemento = document.getElementById('minas-restantes');
+        const tiempoElemento = document.getElementById('tiempo');
+        const nivelActualElemento = document.getElementById('nivel-actual');
+
+        // Seleccionar nivel y mostrar el juego
+        function seleccionarNivel(nivel) {
+            nivelActual = nivel;
+            tamañoTablero = niveles[nivelActual].tamañoTablero;
+            cantidadMinas = niveles[nivelActual].cantidadMinas;
+            pantallaInicio.style.display = 'none';
+            juego.style.display = 'flex';
+            nivelActualElemento.textContent = nivel.charAt(0).toUpperCase() + nivel.slice(1);
+            iniciarJuego();
+        }
+
+        // Volver al menú de inicio
+        function volverAlMenu() {
+            clearInterval(temporizador);
+            juego.style.display = 'none';
+            pantallaInicio.style.display = 'flex';
+        }
+
+        // Iniciar el juego
+        function iniciarJuego() {
+            // Reiniciar variables
+            tablero = [];
+            revelado = [];
+            banderas = [];
+            minas = new Set();
+            juegoTerminado = false;
+            minasRestantes = cantidadMinas;
+            tiempo = 0;
+            clearInterval(temporizador);
+            mensajeElemento.textContent = '';
+            minasRestantesElemento.textContent = minasRestantes;
+            tiempoElemento.textContent = tiempo;
+            tableroElemento.innerHTML = '';
+            tableroElemento.style.gridTemplateColumns = `repeat(${tamañoTablero}, 35px)`;
+
+            // Crear matrices del tablero, revelado y banderas
+            for (let x = 0; x < tamañoTablero; x++) {
+                tablero[x] = [];
+                revelado[x] = [];
+                banderas[x] = [];
+                for (let y = 0; y < tamañoTablero; y++) {
+                    tablero[x][y] = 0;
+                    revelado[x][y] = false;
+                    banderas[x][y] = false;
+                }
+            }
+
+            // Generar minas
+            while (minas.size < cantidadMinas) {
+                const x = Math.floor(Math.random() * tamañoTablero);
+                const y = Math.floor(Math.random() * tamañoTablero);
+                minas.add(`${x},${y}`);
+            }
+
+            // Calcular números de minas adyacentes
+            for (let x = 0; x < tamañoTablero; x++) {
+                for (let y = 0; y < tamañoTablero; y++) {
+                    if (minas.has(`${x},${y}`)) {
+                        tablero[x][y] = 'M';
+                    } else {
+                        tablero[x][y] = contarMinasAlrededor(x, y);
+                    }
+                }
+            }
+
+            // Crear celdas en el DOM
+            for (let x = 0; x < tamañoTablero; x++) {
+                for (let y = 0; y < tamañoTablero; y++) {
+                    const celda = document.createElement('div');
+                    celda.classList.add('celda');
+                    celda.dataset.x = x;
+                    celda.dataset.y = y;
+                    celda.addEventListener('click', manejarClic);
+                    celda.addEventListener('contextmenu', manejarClicDerecho);
+                    tableroElemento.appendChild(celda);
+                }
+            }
+
+            // Iniciar temporizador
+            temporizador = setInterval(() => {
+                if (!juegoTerminado) {
+                    tiempo++;
+                    tiempoElemento.textContent = tiempo;
+                }
+            }, 1000);
+        }
+
+        // Contar minas alrededor de una celda
+        function contarMinasAlrededor(x, y) {
+            let contador = 0;
+            for (let i = -1; i <= 1; i++) {
+                for (let j = -1; j <= 1; j++) {
+                    if (i === 0 && j === 0) continue;
+                    const nx = x + i;
+                    const ny = y + j;
+                    if (nx >= 0 && nx < tamañoTablero && ny >= 0 && ny < tamañoTablero) {
+                        if (minas.has(`${nx},${ny}`)) {
+                            contador++;
+                        }
+                    }
+                }
+            }
+            return contador;
+        }
+
+        // Manejar clic izquierdo (revelar celda)
+        function manejarClic(evento) {
+            if (juegoTerminado) return;
+            evento.preventDefault();
+
+            const x = parseInt(evento.target.dataset.x);
+            const y = parseInt(evento.target.dataset.y);
+
+            if (revelado[x][y] || banderas[x][y]) return;
+
+            if (minas.has(`${x},${y}`)) {
+                // Si es una mina, termina el juego
+                revelarTodo();
+                evento.target.classList.add('mina');
+                mensajeElemento.textContent = '¡Has perdido! Pisaste una mina.';
+                mensajeElemento.style.color = '#ff4d4d';
+                juegoTerminado = true;
+                clearInterval(temporizador);
+                return;
+            }
+
+            // Revelar la celda
+            revelarCelda(x, y);
+            actualizarTablero();
+
+            // Verificar si el jugador ha ganado
+            if (verificarVictoria()) {
+                mensajeElemento.textContent = `¡Felicidades! ¡Has ganado en ${tiempo} segundos!`;
+                mensajeElemento.style.color = '#ffd700';
+                juegoTerminado = true;
+                clearInterval(temporizador);
+            }
+        }
+
+        // Manejar clic derecho (colocar/quitar bandera)
+        function manejarClicDerecho(evento) {
+            if (juegoTerminado) return;
+            evento.preventDefault();
+
+            const x = parseInt(evento.target.dataset.x);
+            const y = parseInt(evento.target.dataset.y);
+
+            if (revelado[x][y]) return;
+
+            if (banderas[x][y]) {
+                // Quitar bandera
+                banderas[x][y] = false;
+                minasRestantes++;
+                evento.target.classList.remove('bandera');
+            } else {
+                // Colocar bandera
+                banderas[x][y] = true;
+                minasRestantes--;
+                evento.target.classList.add('bandera');
+            }
+
+            minasRestantesElemento.textContent = minasRestantes;
+        }
+
+        // Revelar una celda y las adyacentes si es necesario
+        function revelarCelda(x, y) {
+            if (x < 0 || x >= tamañoTablero || y < 0 || y >= tamañoTablero || revelado[x][y] || banderas[x][y]) return;
+
+            revelado[x][y] = true;
+
+            if (tablero[x][y] === 0) {
+                for (let i = -1; i <= 1; i++) {
+                    for (let j = -1; j <= 1; j++) {
+                        revelarCelda(x + i, y + j);
+                    }
+                }
+            }
+        }
+
+        // Actualizar el tablero en el DOM
+        function actualizarTablero() {
+            const celdas = document.querySelectorAll('.celda');
+            celdas.forEach(celda => {
+                const x = parseInt(celda.dataset.x);
+                const y = parseInt(celda.dataset.y);
+                if (revelado[x][y]) {
+                    celda.classList.add('revelada');
+                    if (tablero[x][y] !== 0) {
+                        celda.textContent = tablero[x][y];
+                        // Colorear los números según la cantidad de minas
+                        switch (tablero[x][y]) {
+                            case 1: celda.style.color = '#1e90ff'; break;
+                            case 2: celda.style.color = '#32cd32'; break;
+                            case 3: celda.style.color = '#ff4500'; break;
+                            case 4: celda.style.color = '#8a2be2'; break;
+                            default: celda.style.color = '#ff1493'; break;
+                        }
+                    }
+                }
+            });
+        }
+
+        // Revelar todas las celdas al perder
+        function revelarTodo() {
+            minas.forEach(mina => {
+                const [x, y] = mina.split(',').map(Number);
+                const celda = document.querySelector(`.celda[data-x="${x}"][data-y="${y}"]`);
+                celda.classList.add('mina');
+                celda.classList.add('revelada');
+                celda.classList.remove('bandera');
+            });
+        }
+
+        // Verificar si el jugador ha ganado
+        function verificarVictoria() {
+            let celdasNoReveladas = 0;
+            for (let x = 0; x < tamañoTablero; x++) {
+                for (let y = 0; y < tamañoTablero; y++) {
+                    if (!revelado[x][y] && !minas.has(`${x},${y}`)) {
+                        celdasNoReveladas++;
+                    }
+                }
+            }
+            return celdasNoReveladas === 0;
+        }
+    </script>
+</body>
+</html>
