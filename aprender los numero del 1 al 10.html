@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Contar Juguetes</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #ffeb3b, #ff8a65, #ffeb3b, #ff8a65);
+            background-size: 400%;
+            animation: fondoAnimado 15s ease infinite;
+            font-family: 'Comic Sans MS', sans-serif;
+            overflow: hidden;
+        }
+
+        @keyframes fondoAnimado {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .contenedor {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #ff4500;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .juguetes {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .juguete-emoji {
+            font-size: 60px; /* Tamaño grande y agradable a la vista */
+            margin: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .juguete-emoji:hover {
+            transform: scale(1.1);
+        }
+
+        .botones {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .boton-numero {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #ffd700;
+            border: 3px solid #ff4500;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .boton-numero:hover {
+            background-color: #ffa500;
+            transform: scale(1.1);
+        }
+
+        .boton-siguiente {
+            font-size: 20px;
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #32cd32;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .boton-siguiente:hover {
+            background-color: #228b22;
+            transform: scale(1.1);
+        }
+
+        .boton-reiniciar {
+            font-size: 20px;
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #1e90ff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .boton-reiniciar:hover {
+            background-color: #4682b4;
+            transform: scale(1.1);
+        }
+
+        .mensaje {
+            font-size: 24px;
+            color: #1e90ff;
+            margin-top: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .boton-inicio {
+            font-size: 24px;
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #ff69b4;
+            border: none;
+            border-radius: 15px;
+            padding: 15px 30px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .boton-inicio:hover {
+            background-color: #ff1493;
+            transform: scale(1.1);
+        }
+
+        .score-ronda {
+            font-size: 20px;
+            color: #ff4500;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="inicio">
+        <button class="boton-inicio" onclick="iniciarJuego()">Empezar a jugar</button>
+    </div>
+    <div id="juego" class="contenedor" style="display: none;">
+        <div id="score-ronda" class="score-ronda">Ronda: 1/10 | Puntuación: 0</div>
+        <h1 id="instruccion">Cuenta los juguetes y selecciona el número correcto</h1>
+        <div id="juguetes" class="juguetes"></div>
+        <div id="botones" class="botones"></div>
+        <div id="mensaje" class="mensaje"></div>
+    </div>
+
+    <script>
+        // Lista de emojis para representar los juguetes
+        const juguetes = [
+            '🚗',  // Coche de juguete
+            '🧸',  // Oso de peluche
+            '⚽',  // Balón de fútbol
+            '🎲',  // Dado
+            '✈️',  // Avión de juguete
+            '🚂',  // Tren
+            '🎸',  // Guitarra de juguete
+            '🏀',  // Pelota de baloncesto
+            '🤖',  // Robot
+            '🎀'   // Lazo
+        ];
+
+        let numeroCorrecto = 1;
+        let rondaActual = 0;
+        const rondasTotales = 10;
+        let score = 0;
+
+        function iniciarJuego() {
+            document.getElementById('inicio').style.display = 'none';
+            document.getElementById('juego').style.display = 'block';
+            numeroCorrecto = Math.floor(Math.random() * 10) + 1;
+            mostrarJuguetes();
+            crearBotones();
+            actualizarScoreRonda();
+        }
+
+        function mostrarJuguetes() {
+            const contenedorJuguetes = document.getElementById('juguetes');
+            contenedorJuguetes.innerHTML = '';
+            const juguetesMezclados = [...juguetes].sort(() => Math.random() - 0.5);
+            const juguetesSeleccionados = juguetesMezclados.slice(0, numeroCorrecto);
+            juguetesSeleccionados.forEach(juguete => {
+                const span = document.createElement('span');
+                span.className = 'juguete-emoji';
+                span.textContent = juguete;
+                contenedorJuguetes.appendChild(span);
+            });
+            document.getElementById('instruccion').textContent = `Cuenta los juguetes y selecciona el número correcto`;
+        }
+
+        function crearBotones() {
+            const contenedorBotones = document.getElementById('botones');
+            contenedorBotones.innerHTML = '';
+            for (let i = 1; i <= 10; i++) {
+                const boton = document.createElement('button');
+                boton.className = 'boton-numero';
+                boton.textContent = i;
+                boton.onclick = () => verificarRespuesta(i);
+                contenedorBotones.appendChild(boton);
+            }
+        }
+
+        function actualizarScoreRonda() {
+            const scoreRonda = document.getElementById('score-ronda');
+            scoreRonda.textContent = `Ronda: ${rondaActual + 1}/${rondasTotales} | Puntuación: ${score}`;
+        }
+
+        function pasarSiguienteRonda() {
+            rondaActual++;
+            if (rondaActual < rondasTotales) {
+                numeroCorrecto = Math.floor(Math.random() * 10) + 1;
+                mostrarJuguetes();
+                crearBotones();
+                actualizarScoreRonda();
+            } else {
+                const mensaje = document.getElementById('mensaje');
+                mensaje.textContent = `¡Felicidades! Has completado las ${rondasTotales} rondas del juego. Puntuación final: ${score}/${rondasTotales}.`;
+                const botonReiniciar = document.createElement('button');
+                botonReiniciar.className = 'boton-reiniciar';
+                botonReiniciar.textContent = 'Reiniciar';
+                botonReiniciar.onclick = () => {
+                    reiniciarJuego();
+                };
+                mensaje.appendChild(botonReiniciar);
+            }
+        }
+
+        function reiniciarJuego() {
+            score = 0;
+            rondaActual = 0;
+            numeroCorrecto = Math.floor(Math.random() * 10) + 1;
+            const mensaje = document.getElementById('mensaje');
+            mensaje.textContent = '';
+            mostrarJuguetes();
+            crearBotones();
+            actualizarScoreRonda();
+        }
+
+        function verificarRespuesta(respuesta) {
+            const mensaje = document.getElementById('mensaje');
+            if (respuesta === numeroCorrecto) {
+                score++;
+                mensaje.textContent = `¡Correcto!`;
+                actualizarScoreRonda();
+                if (rondaActual < rondasTotales) {
+                    const botonSiguiente = document.createElement('button');
+                    botonSiguiente.className = 'boton-siguiente';
+                    botonSiguiente.textContent = 'Siguiente';
+                    botonSiguiente.onclick = () => {
+                        mensaje.textContent = '';
+                        botonSiguiente.remove();
+                        pasarSiguienteRonda();
+                    };
+                    mensaje.appendChild(botonSiguiente);
+                }
+            } else {
+                mensaje.textContent = `¡Fallaste! Pasemos a la siguiente ronda.`;
+                if (rondaActual < rondasTotales) {
+                    const botonSiguiente = document.createElement('button');
+                    botonSiguiente.className = 'boton-siguiente';
+                    botonSiguiente.textContent = 'Siguiente';
+                    botonSiguiente.onclick = () => {
+                        mensaje.textContent = '';
+                        botonSiguiente.remove();
+                        pasarSiguienteRonda();
+                    };
+                    mensaje.appendChild(botonSiguiente);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
